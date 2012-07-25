@@ -29,44 +29,369 @@
 	<link rel="stylesheet" href="../themes/transition/horizontal-slide.css">
 	
 	<script src="../modernizr.custom.js"></script>
+
+<!-- mathjax -->
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'] ],
+      displayMath: [ ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+    });
+  </script>
+  <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/1.1-latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML.js"></script>
+
 </head>
 
 <body class="deck-container">
 
 <!-- Begin slides -->
 <section class="slide" id="title-slide">
-	<h2>Architecture of an Open Source Mathematics Application</h2>
-	<p>
-		<img src="images/sage_logo_new.png" alt="Sage logo">
-		<center><a href="http://www.sagemath.org">http://www.sagemath.org</a></center>
-	</p>
+	<center>
+	<h2>Architecture of an Open-source Mathematical Software System</h2>
+
+	<br><br><br><br>
+
+    <table cellpadding="20px">
+      <tr>
+        <td style="padding:15px; text-align:center"><img src="images/sage_logo_new.png" alt="Sage logo" ></td>
+        <td></td>
+        <td style="padding:15px; text-align:center"><a href="http://www.sagemath.org" target="_blank">http://www.sagemath.org</a></td>
+      </tr>
+    </table>
+
+    <br><br>
+
+	<h4>Benjamin F Jones</h4>
+	<h3>2012</h3>
+	</center>
 </section>
 
 <section class="slide" id="overview">
 	<h2>Overview</h2>
+
 	<ol>
 		<li>
 			<h3>What is Sage</h3>
 		</li>
 		<li>
-			<h3>Choose Themes</h3>
-			<p>One for slide styles and one for deck&nbsp;transitions.</p>
+			<h3>Demo</h3>
 		</li>
 		<li>
-			<h3>Include Extensions</h3>
-			<p>Add extra functionality to your deck, or leave it stripped&nbsp;down.</p>
+			<h3>Basic Design Philosophy</h3>
+		</li>
+		<li>
+			<h3>Front End(s) / Back End(s)</h3>
+		</li>
+		<li>
+			<h3>Example: Symbolics</h3>
 		</li>
 	</ol>
 </section>
 
+<!-- INTRO -->
+
 <section class="slide" id="what-is-sage">
 	<h2>What is Sage?</h2>
+
+		<blockquote>
+			Creating a viable free open source alternative to Magma, Maple, 
+			Mathematica and Matlab.
+		</blockquote> </li>
+
 	<ul>
-		<li> <b>S</b>oftware for <b>Algebra</b> and </b>G</b>eometry 
-		<b>E</b>xploration</p> </li>
-		<li> A free, open source, peer-reviewed, alternative to the "Ma"s: 
-		Mathematica, Maple, Matlab, Magma, ... </li>
+		<li> <strong>S</strong>oftware for 
+		     <strong>A</strong>lgebra and 
+		     <strong>G</strong>eometry 
+		     <strong>E</strong>xploration</p> </li>
+		<li>Started by William Stein in 2004</li>
 	</ul>
+</section>
+
+<section class="slide" id="sage-key-points">
+	<h2>Key Points</h2>
+	<ul>
+		<li class="slide"> <strong>Goals</strong>
+		<p>Sage aims to provide everything mathematicians, researchers and students need to do their calculations.</p></li> 
+		<li class="slide"> <strong>Open Source</strong>
+		<p>Sage is built upon open-source software and it is fully open-source by 
+		itself (GPLv2+)</p></li>
+		<li class="slide"> <strong>Open Development</strong>
+		<p>Sage fosters a community of developers and encourages them to take 
+		part in its development.</p></li>
+		<li class="slide"> <strong>Leverages Existing Software</strong>
+		<p>Sage does not reinvent the wheel for every known calculation.</p></li>
+	</ul>
+</section>
+
+<section class="slide" id="sage-key-points-2">
+	<h2>Key Points</h2>
+	<ul>
+		<li class="slide"> <strong>Python</strong>
+        <p>Sage uses Python as its "glue language" to interface all its components. 
+        Python is also Sage's user interface and programming language and hence 
+        Sage does not invent a new programming language as other mathematical 
+        software systems do.</p></li>
+		<li class="slide"> <strong>Interfaces</strong>
+		<p>
+			<ol>
+				<li> web-interface, e.g. <a href="http://sagenb.org" target="_blank">
+					http://sagenb.org</a> </li>
+				<li> rich command-line (IPython)</li>
+				<li> embedded in LaTeX, webpages</li>
+			</ol>
+		</p></li>
+	</ul>
+</section>
+
+<section class="slide" id="core-problem">
+One of the core architectural tasks Sage must solve is to smoothly knit many
+open-source mathematics packages, programs, and libraries together into a unified
+and easy to use system.
+<ul>
+  <li>Sage currently distributes 98 "standard" packages, 59 "optional" packages, and
+  61 "experimental" packages.</li>
+  <li>Standard packages range from basic system tools, e.g. <code>gcc-4.6.3</code>
+  and <code>bzip2-1.0.6</code> to specializes mathematics libraries, 
+  e.g. <code>libm4ri-20111004</code> and <code>symmetrica-2.0</code></li>
+  <li>Sage also distributes the "Sage Library", the Python / Cython core of Sage
+  which both interfaces all the packages and implements new algorithms.</li>
+</ul>
+</section>
+
+<section class="slide" id="sloc">
+<h2>Lines of Code in the Sage Library</h2>
+
+<p>Excluding auto-generated <code>.c</code>, <code>.cpp</code> files..</p>
+
+<code style="font-size: 80%"><pre>
+-----------------------------------------------------------------
+Language       files          blank        comment           code
+-----------------------------------------------------------------
+Python          1217         151303         423754         200379
+Cython           326          63735         178146         111416
+Javascript         4            610           1662           2189
+-----------------------------------------------------------------
+SUM:            1547         215648         603562         313984
+-----------------------------------------------------------------
+</pre></code>
+</section>
+
+
+<section class="slide" id="sage-facts">
+	<h2>Some fun facts</h2>
+	<ul>
+		<li>Started by William Stein (University of Washington) in 2004. First major
+		release was in 2005.</li>
+		<li>300 released later, we are at Sage-5.1</li>
+		<li>License: GPLv2+</li>
+		<li>Distributed as source and precompiled binaries</li>
+        <li>Approaching 90% doctest coverage</li>
+		<li>Cited in over 110 published papers, 25 Ph.D. theses, 20 books</li>
+		<li>180 Developers</li>
+	</ul>
+</section>
+
+<section class="slide" id="sage-developer-map-earth">
+	<h2>Developer Map (EARTH)</h2>
+	<img src="images/sage-dev-map-EARTH.png" alt="dev map EARTH">	
+</section>
+
+<section class="slide" id="sage-developer-map-USA">
+	<h2>Developer Map (USA)</h2>
+	<img src="images/sage-dev-map-USA.png" alt="dev map USA">	
+</section>
+
+<!-- DEMO -->
+
+<section class="slide" id="demo">
+  <center><h1>Demo</h2></center>
+</section>
+
+<!-- BASIC ARCHITECTURE -->
+
+<section class="slide" id="architecture-python">
+	<h2>Basic Architecture</h2>
+    <p>Sage uses Python ...
+      <ul>
+        <li class="slide"> as its user programming language (no need to learn a new, proprietery language!)
+        <li class="slide"> to interface to its external libraries and tools
+          <ul>
+            <li> calling C/C++ libraries </li>
+            <li> controlling external interactive programs using <strong>pexpect</strong>
+            <li> making system calls, executing non-interactive programs, ...</li>
+          </ul>
+        </ul></p>
+</section>
+
+<section class="slide" id="scientific-python">
+<h2>Scientific Python Community</h2>
+There were (are) several good reasons for choosing python
+for the backbone of Sage:
+<ol>
+  <li>Python is practical, easy to learn, expressive
+<code style="font-size: 80%"><pre>
+(a,b,c) = next((a, b, 1000-a-b) for a in range(1, 1000)
+                                for b in range(a, 1000)
+                                if a**2 + b**2 == (1000-a-b)**2 )
+</code></pre>
+
+  <li>There is a strong and growing "scientific python" community
+    <ul>
+      <li>NumPy (fast N-dimensional arrays)</li>
+      <li>SciPy (open-source python tools for mathematics, science, and engineering)</li>
+      <li>SymPy (library for symbolic mathematics)</li>
+      <li>matplotlib (powerfull 2D plotting library)</li>
+      <li> ... </li>
+    </ul>
+</ol>
+</section>
+
+<section class="slide" id="cython">
+<h2>Scientific Python Community</h2>
+<ol start=3>
+  <li>Sage has a Python to C converter, Cython, built-in. This allows users to compile 
+  their own code.
+  <blockquote>
+    Cython is a language that makes writing C extensions for the Python language as easy as Python itself. 
+  </blockquote>
+  <li class="slide">
+  Cython gives you the combined power of Python and C to let you ... 
+  <ul>
+    <li> write Python code that calls <strong>back and forth from and to</strong> C or C++ code natively at any point </li>
+    <li> easily tune readable Python code into plain C performance by adding static type declarations</li>
+  </ul></li>
+</ol>
+</section>
+
+<section class="slide" id="cython-example">
+  <h2>Numerical Integration in Python</h2>
+  <p>Consider the following Python code:</p>
+<code><pre>
+def f(x):
+    return x**2-x
+
+def integrate_f(a, b, N):
+    s = 0
+    dx = (b-a)/N
+    for i in range(N):
+        s += f(a+i*dx)
+    return s * dx
+</code></pre>
+</section>
+
+<section class="slide" id="cython-example2">
+<h2>Numerical Integration in Cython</h2>
+<p>With type declarations, this might look like:</p>
+<code><pre>
+cdef double f(double x):
+    return x**2-x
+
+def integrate_f(double a, double b, int N):
+    cdef int i
+    cdef double s, dx
+    s = 0
+    dx = (b-a)/N
+    for i in range(N):
+        s += f(a+i*dx)
+    return s * dx
+</code></pre>
+
+<p class="slide">This Cython code is close to <strong>1,000</strong> times faster
+than the Python code!</p>
+</section>
+
+<section class="slide" id="interfaces">
+  <h2>Interfaces to open-source mathematical and scientific tools</h2>
+  <ul>
+    <li class="slide">
+    Maxima
+    <ul>
+      <li>LISP based interactive computer algebra system</li>
+      <li>Sage converts "Sage objects" to Maxima by compiling them to
+      "ECL Objects" and sending these to the Maxima library for evaluation</li>
+      <li>Maxima is very powerfull at e.g. symbolic calculus and equation solving, 
+          but it (and Sage's interface to it) is generally slow</li>
+    </ul></li>
+    <li class="slide">
+	GiNaC
+    <ul>
+      <li>C++ library for embedded symbolic computation</li>
+      <li>Very fast, but fewer features (esp. symbolic functions and calculus)</li>
+      <li>GiNaC is wrapped by Pynac to provide the basic symbolics back end for Sage</li>
+    </ul></li>
+  </ul>
+</section>
+
+<section class="slide" id="interfaces-cont">
+  <h2>Interfaces to open-source mathematical and scientific tools</h2>
+  <ul>
+	<li> Flint (fast library for number theory)
+	<li> PARI/GP (full CAS, also library for fast number theory)
+	<li> Singular (computer algebra system for polynomial computations)
+	<li> GAP (Groups, Algorithms, and Programming)
+	<li> etc..
+  </ul>
+</section>
+
+<!-- Symbolics
+---------
+
+* ginac / pynac backend
+* symbolic ring / coersion framework
+* symbolic functions
+	* symbolic function class structure
+    * example mixing Sage, Pynac, Maxima, SymPy
+	* examples of Sage -> Maxima -> Sage -> mpmath -> matplotlib
+
+38: args = (f,x,Integer(0),oo)
+39: [sr_to_max(SR(a)) for a in args]
+40: from sage.interfaces.maxima_lib import sr_to_max
+41: [sr_to_max(SR(a)) for a in args]
+42: from sage.interfaces.maxima_lib import max_integrate
+43: max_integrate
+44: maxima_eval(([max_integrate],[sr_to_max(SR(a)) for a in args]))
+45: from sage.interfaces.maxima_lib import maxima_eval
+46: maxima_eval(([max_integrate],[sr_to_max(SR(a)) for a in args]))
+47: from sage.interfaces.maxima_lib import max_to_sr
+48: max_to_sr(maxima_eval(([max_integrate],[sr_to_max(SR(a)) for a in args])))
+49: A = max_to_sr(maxima_eval(([max_integrate],[sr_to_max(SR(a)) for a in args])))
+50: A.n(digits=Integer(1000))
+51: parent(A.n(digits=Integer(1000)))
+
+    -->
+
+<section class="slide" id="symbolics">
+  <h2>Example from Symbolic Calculus</h2>
+  <h3>Sage's goal is to provide the user with a smooth transition between different 
+  underlying systems.</h3>
+
+  <p>In particular, how does Sage calculate the value of 
+  $\int_0^\infty e^{-x} \log(x+1)$ to high
+  precision?</p>
+
+  <br><br>
+
+  <center>
+  <h3 class="slide">DEMO</h3>
+  </center>
+
+</section>
+
+<section class="slide" id="symbolics-architecture-1">
+<img src="images/sage_to_maxima_integrate.svg">
+</section>
+
+<section class="slide" id="symbolics-architecture-1">
+<img src="images/maxima_to_sage_evaluate.svg">
+</section>
+
+<section class="slide" id="challenges">
+<h2>Challenges</h2>
 </section>
 
 <!-- END OF SLIDES -->
