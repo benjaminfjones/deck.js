@@ -23,7 +23,7 @@
 	<link rel="stylesheet" href="../extensions/scale/deck.scale.css">
 	
 	<!-- Style theme. More available in /themes/style/ or create your own. -->
-	<link rel="stylesheet" href="../themes/style/swiss.css">
+	<link rel="stylesheet" href="swiss-custom.css">
 	
 	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
 	<link rel="stylesheet" href="../themes/transition/horizontal-slide.css">
@@ -54,20 +54,19 @@
 	<center>
 	<h2>Architecture of an Open-source Mathematical Software System</h2>
 
-	<br><br><br><br>
+	<br><br>
 
-    <table cellpadding="20px">
+    <table>
       <tr>
-        <td style="padding:15px; text-align:center"><img src="images/sage_logo_new.png" alt="Sage logo" ></td>
-        <td></td>
-        <td style="padding:15px; text-align:center"><a href="http://www.sagemath.org" target="_blank">http://www.sagemath.org</a></td>
+        <td><img style="vertical-align:middle; margin-bottom:0em" src="images/sage_logo_new.png" alt="Sage logo" height=65 width=245></td>
+        <td> <a href="http://www.sagemath.org" target="_blank">http://www.sagemath.org</a></td>
       </tr>
     </table>
 
     <br><br>
 
-	<h4>Benjamin F Jones</h4>
-	<h3>2012</h3>
+	<h4>Benjamin Jones</h4>
+	<h3>Galois, July 2012</h3>
 	</center>
 </section>
 
@@ -85,10 +84,10 @@
 			<h3>Basic Design Philosophy</h3>
 		</li>
 		<li>
-			<h3>Front End(s) / Back End(s)</h3>
+			<h3>Design of the Symbolics Component</h3>
 		</li>
 		<li>
-			<h3>Example: Symbolics</h3>
+			<h3>Challenges</h3>
 		</li>
 	</ol>
 </section>
@@ -98,10 +97,16 @@
 <section class="slide" id="what-is-sage">
 	<h2>What is Sage?</h2>
 
-		<blockquote>
-			Creating a viable free open source alternative to Magma, Maple, 
-			Mathematica and Matlab.
-		</blockquote> </li>
+    <table>
+      <tr>
+        <td><img style="vertical-align:middle; margin-bottom:0em" src="images/sage_logo_new.png" alt="Sage logo" height=65 width=245></td>
+        <td> <a href="http://www.sagemath.org" target="_blank">http://www.sagemath.org</a></td>
+      </tr>
+    </table>
+
+    <blockquote>
+      Creating a viable free open source alternative to Magma, Maple, Mathematica and Matlab.
+    </blockquote>
 
 	<ul>
 		<li> <strong>S</strong>oftware for 
@@ -131,34 +136,42 @@
 <section class="slide" id="sage-key-points-2">
 	<h2>Key Points</h2>
 	<ul>
+        <li class="slide"> <strong>Peer Review</strong>
+        <p>All code contributed to the Sage library undergoes peer review</p></li>
 		<li class="slide"> <strong>Python</strong>
-        <p>Sage uses Python as its "glue language" to interface all its components. 
-        Python is also Sage's user interface and programming language and hence 
-        Sage does not invent a new programming language as other mathematical 
-        software systems do.</p></li>
+          <p>Sage uses Python as its "glue language" to interface all its components.</p>
+          <p>Python is also Sage's user interface and programming language</p> </li>
 		<li class="slide"> <strong>Interfaces</strong>
-		<p>
-			<ol>
+			<ul>
 				<li> web-interface, e.g. <a href="http://sagenb.org" target="_blank">
 					http://sagenb.org</a> </li>
 				<li> rich command-line (IPython)</li>
-				<li> embedded in LaTeX, webpages</li>
-			</ol>
-		</p></li>
+				<li> embedded in LaTeX, webpages, literate environments</li>
+			</ul>
+		</li>
 	</ul>
 </section>
 
 <section class="slide" id="core-problem">
-One of the core architectural tasks Sage must solve is to smoothly knit many
+<h2>Core Challenge</h2>
+<p>One of the core architectural tasks Sage must solve is to smoothly knit many
 open-source mathematics packages, programs, and libraries together into a unified
-and easy to use system.
+and easy to use system.</p>
 <ul>
-  <li>Sage currently distributes 98 "standard" packages, 59 "optional" packages, and
-  61 "experimental" packages.</li>
-  <li>Standard packages range from basic system tools, e.g. <code>gcc-4.6.3</code>
-  and <code>bzip2-1.0.6</code> to specializes mathematics libraries, 
-  e.g. <code>libm4ri-20111004</code> and <code>symmetrica-2.0</code></li>
-  <li>Sage also distributes the "Sage Library", the Python / Cython core of Sage
+  <li>Sage currently distributes 98 <strong>standard</strong> packages, 59 <strong>optional</strong> packages, and
+  61 <strong>experimental</strong> packages.</li>
+  <li>Standard packages range from basic system tools, e.g. 
+  <ul>
+    <li><code>gcc-4.6.3</code></li>
+    <li><code>bzip2-1.0.6</code></li>
+  </ul>
+  to specialized mathematics libraries, 
+  e.g.  and 
+  <ul>
+    <li><code>libm4ri-20111004</code></li>
+    <li><code>symmetrica-2.0</code></li>
+  </ul></li>
+  <li>Sage also distributes the "Sage Library", the core of Sage
   which both interfaces all the packages and implements new algorithms.</li>
 </ul>
 </section>
@@ -168,19 +181,23 @@ and easy to use system.
 
 <p>Excluding auto-generated <code>.c</code>, <code>.cpp</code> files..</p>
 
-<code style="font-size: 80%"><pre>
------------------------------------------------------------------
-Language       files          blank        comment           code
------------------------------------------------------------------
-Python          1217         151303         423754         200379
-Cython           326          63735         178146         111416
-Javascript         4            610           1662           2189
------------------------------------------------------------------
-SUM:            1547         215648         603562         313984
------------------------------------------------------------------
+<code style="font-size: 60%"><pre>
+        -----------------------------------------------------------------
+        Language       files          blank        comment           code
+        -----------------------------------------------------------------
+        Python          1217         151303         423754         200379
+        Cython           326          63735         178146         111416
+        Javascript         4            610           1662           2189
+        -----------------------------------------------------------------
+        SUM:            1547         215648         603562         313984
+        -----------------------------------------------------------------
 </pre></code>
-</section>
 
+<p class="slide">
+Much of the 603562 comment lines are <strong>doctests</strong> -- unit tests
+embedded in the documentation.
+</p>
+</section>
 
 <section class="slide" id="sage-facts">
 	<h2>Some fun facts</h2>
@@ -192,7 +209,7 @@ SUM:            1547         215648         603562         313984
 		<li>Distributed as source and precompiled binaries</li>
         <li>Approaching 90% doctest coverage</li>
 		<li>Cited in over 110 published papers, 25 Ph.D. theses, 20 books</li>
-		<li>180 Developers</li>
+		<li>180 active developers, over 440 contributors</li>
 	</ul>
 </section>
 
@@ -230,23 +247,22 @@ SUM:            1547         215648         603562         313984
 
 <section class="slide" id="scientific-python">
 <h2>Scientific Python Community</h2>
-There were (are) several good reasons for choosing python
-for the backbone of Sage:
+<p>There are several good reasons for choosing python
+for the backbone of Sage:</p>
 <ol>
-  <li>Python is practical, easy to learn, expressive
-<code style="font-size: 80%"><pre>
+  <li>Python is practical, easy to learn, expressive:
+<code style="font-size: 60%"><pre>
 (a,b,c) = next((a, b, 1000-a-b) for a in range(1, 1000)
                                 for b in range(a, 1000)
                                 if a**2 + b**2 == (1000-a-b)**2 )
-</code></pre>
+</pre></code>
 
-  <li>There is a strong and growing "scientific python" community
+  <li>There is a strong and growing "scientific python" community, e.g.
     <ul>
       <li>NumPy (fast N-dimensional arrays)</li>
       <li>SciPy (open-source python tools for mathematics, science, and engineering)</li>
       <li>SymPy (library for symbolic mathematics)</li>
       <li>matplotlib (powerfull 2D plotting library)</li>
-      <li> ... </li>
     </ul>
 </ol>
 </section>
@@ -303,6 +319,10 @@ def integrate_f(double a, double b, int N):
 
 <p class="slide">This Cython code is close to <strong>1,000</strong> times faster
 than the Python code!</p>
+</section>
+
+<section class="slide" id="demo-2">
+  <center><h1>Demo</h2></center>
 </section>
 
 <section class="slide" id="interfaces">
@@ -365,14 +385,21 @@ than the Python code!</p>
 
     -->
 
-<section class="slide" id="symbolics">
-  <h2>Example from Symbolic Calculus</h2>
-  <h3>Sage's goal is to provide the user with a smooth transition between different 
-  underlying systems.</h3>
+<section class="slide" id="transition-to-symbolics">
+<h1>Design of the Symbolics Component</h1>
+</section>
 
-  <p>In particular, how does Sage calculate the value of 
-  $\int_0^\infty e^{-x} \log(x+1)$ to high
-  precision?</p>
+<section class="slide" id="symbolics">
+  <h2>Symbolic Calculus</h2>
+
+  <ul>
+    <li>Sage's goal is to provide the user with a smooth transition between different 
+    underlying systems.</li>
+
+    <li><strong>Question</strong>: how does Sage calculate the value of 
+    <br><br>
+    <center>$\displaystyle \int_0^\infty e^{-x} \log(x+1) \; dx$</center> <br><br>
+    to high precision?</li>
 
   <br><br>
 
@@ -392,6 +419,26 @@ than the Python code!</p>
 
 <section class="slide" id="challenges">
 <h2>Challenges</h2>
+<ul>
+  <li class="slide">Sage is monolithic
+    <ul>
+      <li>We package over 200 pieces of software</li>
+      <li>This makes Sage more like a linux distribution than a single program</li>
+      <li>A <strong>lot</strong> of time and energy is spent on build issues</li>
+    </ul></li>
+  <li class="slide">Development of Sage requires a broad range of expertise:
+    <ul>
+      <li>Expertice from all areas of mathematics</li>
+      <li>Expertice in software development practices</li>
+      <li>Expertice in Web Development (<code>sagenb</code>, 
+      <code>sagecell</code>, ...)</li>
+    </ul></li>
+  <li class="slide">Rigorous peer review takes time and effort
+  <ul>
+    <li>Purple Sage <a href="http://purple.sagemath.org/">http://purple.sagemath.org</a></li>
+    <li>sage-combinat <a href="http://wiki.sagemath.org/combinat">http://wiki.sagemath.org/combinat</a></li>
+  </ul></li>
+</ul>
 </section>
 
 <!-- END OF SLIDES -->
